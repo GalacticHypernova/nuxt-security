@@ -3,7 +3,7 @@ import crypto from 'node:crypto'
 import { resolveSecurityRules } from '../context'
 
 const LINK_RE = /<link([^>]*?>)/g
-const SCRIPT_RE = /<script([^>]*?>)/g
+const SCRIPT_RE = /<script([^>]*?>)/ig
 const STYLE_RE = /<style([^>]*?>)/g
 
 
