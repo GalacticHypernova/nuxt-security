@@ -8,6 +8,7 @@ export const defaultSecurityConfig = (serverlUrl: string): Partial<ModuleOptions
     crossOriginOpenerPolicy: 'same-origin',
     crossOriginEmbedderPolicy: 'require-corp',
     contentSecurityPolicy: {
+      //'default-src' : ["'none'"],
       'base-uri': ["'none'"],
       'font-src': ["'self'", 'https:', 'data:'],
       'form-action': ["'self'"],
@@ -55,6 +56,7 @@ export const defaultSecurityConfig = (serverlUrl: string): Partial<ModuleOptions
     ...defaultThrowErrorValue
   },
   xssValidator: {
+    methods: ['GET', 'POST'],
     ...defaultThrowErrorValue
   },
   corsHandler: {
@@ -82,6 +84,7 @@ export const defaultSecurityConfig = (serverlUrl: string): Partial<ModuleOptions
     exclude: [/node_modules/, /\.git/]
   },
   ssg: {
+    meta: true,
     hashScripts: true,
     hashStyles: false
   },

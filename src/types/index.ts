@@ -4,6 +4,7 @@ import type { SecurityHeaders } from './headers'
 import type { AllowedHTTPMethods, BasicAuth, RateLimiter, RequestSizeLimiter, XssValidator, CorsOptions } from './middlewares'
 
 export type Ssg = {
+  meta?: boolean;
   hashScripts?: boolean;
   hashStyles?: boolean;
 };
@@ -16,43 +17,16 @@ export interface ModuleOptions {
   corsHandler: CorsOptions | false;
   allowedMethodsRestricter: AllowedHTTPMethods | false;
   hidePoweredBy: boolean;
-  basicAuth: BasicAuth | false;
   enabled: boolean;
-  csrf: CsrfOptions | boolean;
   nonce: boolean;
-  removeLoggers: RemoveOptions | false;
   ssg: Ssg | false;
-  /**
-   * enable runtime nitro hooks to configure some options at runtime
-   * Current configuration editable at runtime: headers
-   */
-  runtimeHooks: boolean;
   sri: boolean
+  basicAuth: BasicAuth | false;
+  csrf: CsrfOptions | boolean;
+  removeLoggers: RemoveOptions | false;
 }
 
-export type NuxtSecurityRouteRules = Pick<ModuleOptions,
-  'headers' |
-  'requestSizeLimiter' |
-  'rateLimiter' |
-  'xssValidator' |
-  'corsHandler' |
-  'allowedMethodsRestricter' |
-  'nonce' |
-  'sri' |
-  'ssg'>
-
-  declare module 'nitropack' {
-    interface NitroRuntimeHooks {
-      'nuxt-security:headers': (config: {
-        /**
-         * The route for which the headers are being configured
-         */
-        route: string,
-        /**
-         * The headers configuration for the route
-         */
-        headers: SecurityHeaders
-      }) => void
-      'nuxt-security:ready': () => void
-    }
-  } 
+export type NuxtSecurityRouteRules = Partial<
+  Omit<ModuleOptions, 'csrf' | 'basicAuth' | 'rateLimiter'> 
+  & { rateLimiter: Omit<RateLimiter, 'driver'> | false }
+>
