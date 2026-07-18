@@ -4,7 +4,7 @@ import { generateRandomNonce } from '../../../utils/crypto'
 
 const NONCE_ELEM_RE = /<(link|script|style)\b([^>]*?>)/gi
 const NONCE_RE = /\bnonce=__QUOTE_PLACEHOLDER_(\d+)__/i
-const QUOTE_MASK_RE = /(?<!\\)"([^"\\]*(?:\\.[^"\\]*)*)"/g
+const QUOTE_MASK_RE = /(?<!\\)"[^"\\]*(?:\\.[^"\\]*)*"/g
 const QUOTE_RESTORE_RE = /__QUOTE_PLACEHOLDER_(\d+)__/g
 
 function injectNonceToTags(element: string, nonce: string) {
