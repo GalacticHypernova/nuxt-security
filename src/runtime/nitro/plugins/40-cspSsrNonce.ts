@@ -4,7 +4,7 @@ import { generateRandomNonce } from '../../../utils/crypto'
 
 const ELEM_RE = /<[\w-]+\b(?: [\w-]+(?:="[^"]+")?)*>/gi
 const NONCE_ELEM_RE = /<(link|script|style)\b([^>]*?>)/gi
-const NONCE_RE = /nonce="[^"]+"/i
+const NONCE_RE = /\bnonce="[^"]+"/i
 const QUOTE_MASK_RE = /"([^"]*)"/g
 const QUOTE_RESTORE_RE = /__QUOTE_PLACEHOLDER_(\d+)__/g
 
