@@ -5,7 +5,7 @@ import { generateRandomNonce } from '../../../utils/crypto'
 const ELEM_RE = /<[\w-]+\b(?: [\w-]+(?:="[^"]+")?)*>/gi
 const NONCE_ELEM_RE = /<(link|script|style)\b([^>]*?>)/gi
 const NONCE_RE = /\bnonce="[^"]+"/i
-const QUOTE_MASK_RE = /[^\\]"([^"\\]*(?:\\.[^"\\]*)*)"/g
+const QUOTE_MASK_RE = /([^\\])"([^"\\]*(?:\\.[^"\\]*)*)"/g
 const QUOTE_RESTORE_RE = /__QUOTE_PLACEHOLDER_(\d+)__/g
 
 function injectNonceToTags(element: string, nonce: string) {
@@ -16,9 +16,9 @@ function injectNonceToTags(element: string, nonce: string) {
   const quotes: string[] = [];
 
   // Mask attributes to avoid manipulating stringified elements
-  let maskedElement = element.replace(QUOTE_MASK_RE, (match) => {
-    quotes.push(match);
-    return `__QUOTE_PLACEHOLDER_${quotes.length - 1}__`
+  let maskedElement = element.replace(QUOTE_MASK_RE, (match, pre, content) => {
+    quotes.push(content);
+    return `${pre}"__QUOTE_PLACEHOLDER_${quotes.length - 1}__"`
   });
   // Add nonce to all necessary tags
   maskedElement = maskedElement.replace(NONCE_ELEM_RE, (match, elem, rest) => {
