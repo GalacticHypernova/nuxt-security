@@ -5,7 +5,7 @@ import { generateRandomNonce } from '../../../utils/crypto'
 const ELEM_RE = /<[\w-]+\b(?: [\w-]+(?:="[^"]+")?)*>/gi
 const NONCE_ELEM_RE = /<(link|script|style)\b([^>]*?>)/gi
 const NONCE_RE = /\bnonce="[^"]+"/i
-const QUOTE_MASK_RE = /(?<!\\)"([^"\\]*(?:\\.[^"\\]*)*)"/g;
+const QUOTE_MASK_RE = /(?<!\\)"([^"\\]*(?:\\.[^"\\]*)*)"/g
 const QUOTE_RESTORE_RE = /__QUOTE_PLACEHOLDER_(\d+)__/g
 
 function injectNonceToTags(element: string, nonce: string) {
@@ -18,19 +18,19 @@ function injectNonceToTags(element: string, nonce: string) {
   // Mask attributes to avoid manipulating stringified elements
   let maskedElement = element.replace(QUOTE_MASK_RE, (match) => {
     quotes.push(match);
-    return `__QUOTE_PLACEHOLDER_${quotes.length - 1}__`;
+    return `__QUOTE_PLACEHOLDER_${quotes.length - 1}__`
   });
   // Add nonce to all necessary tags
   maskedElement = maskedElement.replace(NONCE_ELEM_RE, (match, elem, rest) => {
     if (NONCE_RE.test(rest)) {
-      return match.replace(NONCE_RE, `nonce="${nonce}"`);
+      return match.replace(NONCE_RE, `nonce="${nonce}"`)
     }
     return `<${elem} nonce="${nonce}"` + rest
   })
 
   // Restore the original quoted content.
   const restoredHtml = maskedElement.replace(QUOTE_RESTORE_RE, (match, index) => {
-    return quotes[parseInt(index, 10)];
+    return quotes[parseInt(index, 10)]
   });
 
   return restoredHtml;
